@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Random Name Picker</title>
+  <style>
+    :root {
+      --bg: #0f172a; /* slate-900 */
+      --panel: #111827; /* gray-900 */
+      --ink: #e5e7eb; /* gray-200 */
+      --muted: #9ca3af; /* gray-400 */
+      --accent: #22c55e; /* green-500 */
+      --accent-2: #3b82f6; /* blue-500 */
+      --danger: #ef4444; /* red-500 */
+      --card: #1f2937; /* gray-800 */
+      --chip: #0ea5e9; /* sky-500 */
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+      background: radial-gradient(1200px 600px at 80% -10%, rgba(59,130,246,0.2), transparent 60%),
+                  radial-gradient(1000px 500px at -10% 90%, rgba(34,197,94,0.16), transparent 60%),
+                  var(--bg);
+      color: var(--ink);
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 24px; }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+    h1 { font-size: clamp(24px, 2.4vw, 34px); margin: 0; letter-spacing: 0.4px; }
+    .sub { color: var(--muted); font-size: 14px; }
+
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+
+    .card { background: rgba(17,24,39,0.7); border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 10px 30px rgba(0,0,0,0.35); border-radius: 18px; padding: 16px; backdrop-filter: blur(6px); }
+
+    textarea {
+      width: 100%; min-height: 220px; background: var(--card); color: var(--ink); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 12px; resize: vertical; font-size: 14px; line-height: 1.4;
+    }
+    .muted { color: var(--muted); font-size: 13px; }
+
+    .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .row.space { justify-content: space-between; }
+
+    button {
+      appearance: none; border: 1px solid transparent; border-radius: 12px; padding: 10px 14px; font-weight: 600; cursor: pointer; transition: transform .04s ease, box-shadow .2s ease, opacity .2s ease, background .2s ease, border-color .2s ease; font-size: 14px;
+      background: #0b1220; color: var(--ink); border-color: rgba(255,255,255,0.08);
+      box-shadow: 0 2px 0 rgba(255,255,255,0.05) inset, 0 6px 14px rgba(0,0,0,0.3);
+    }
+    button:hover { transform: translateY(-1px); }
+    button:active { transform: translateY(0); }
+    button.primary { background: linear-gradient(180deg, #1a8a46, #0f6a35); border-color: rgba(255,255,255,0.1); }
+    button.blue { background: linear-gradient(180deg, #3b82f6, #1d4ed8); }
+    button.ghost { background: transparent; }
+    button.warn { background: linear-gradient(180deg, #ef4444, #b91c1c); }
+    button:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .columns { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    @media (max-width: 800px) { .columns { grid-template-columns: 1fr; } }
+
+    .list { display: grid; gap: 8px; max-height: 350px; overflow: auto; padding-right: 4px; }
+    .chip { display: inline-flex; align-items: center; gap: 8px; background: rgba(14,165,233,0.12); border: 1px solid rgba(14,165,233,0.25); color: #e0f2fe; padding: 8px 10px; border-radius: 999px; font-size: 13px; }
+    .chip .x { background: transparent; border: none; color: #e0f2fe; cursor: pointer; padding: 0; margin-left: 4px; font-weight: 700; }
+
+    .winner {
+      font-size: clamp(22px, 3vw, 36px); text-align: center; background: linear-gradient(90deg, #93c5fd, #86efac); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 800; letter-spacing: .4px; padding: 10px 0; min-height: 48px;
+    }
+    .confetti { position: fixed; inset: 0; pointer-events: none; }
+
+    .history { display: flex; flex-wrap: wrap; gap: 8px; }
+    .pill { padding: 6px 10px; border-radius: 999px; border: 1px dashed rgba(255,255,255,0.15); font-size: 12px; color: var(--muted);
+            background: rgba(255,255,255,0.02); }
+
+    .stat { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; color: #cbd5e1; font-size: 12px; }
+    .stat strong { color: #fff; }
+
+    .footer { margin-top: 12px; text-align: center; font-size: 12px; color: var(--muted); }
+    a.link { color: #a5b4fc; text-decoration: none; border-bottom: 1px dashed rgba(165,180,252,0.5); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>🎲 Random Name Picker</h1>
+        <div class="sub">Type or paste names (one per line). Each draw removes the name from the list.</div>
+      </div>
+      <div class="row">
+        <button id="saveBtn" class="blue">💾 Save</button>
+        <button id="loadBtn">📂 Load</button>
+        <button id="resetBtn" class="warn">♻️ Reset</button>
+      </div>
+    </header>
+
+    <div class="grid">
+      <section class="card">
+        <div class="row space">
+          <div>
+            <strong>Names Input</strong>
+            <div class="muted">One per line. Duplicates ignored.</div>
+          </div>
+          <div class="row">
+            <button id="addSample" class="ghost">➕ Sample</button>
+            <button id="clearInput" class="ghost">🧹 Clear</button>
+          </div>
+        </div>
+        <textarea id="namesInput" placeholder="Alice
+Bob
+Charlie
+…"></textarea>
+        <div class="row" style="margin-top:10px">
+          <button id="useInput" class="primary">Use This List</button>
+          <span class="stat">Loaded: <strong id="loadedCount">0</strong></span>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="row space">
+          <div>
+            <strong>Draw</strong>
+            <div class="muted">Randomly selects one remaining name and removes it.</div>
+          </div>
+          <div class="row">
+            <button id="undoBtn" title="Undo last draw">↩️ Undo</button>
+            <button id="exportBtn" title="Export current state">⬇️ Export</button>
+            <input type="file" id="importFile" accept="application/json" style="display:none">
+            <button id="importBtn" title="Import a saved state">⬆️ Import</button>
+          </div>
+        </div>
+
+        <div class="winner" id="winner">—</div>
+        <div class="row" style="justify-content:center; gap:12px; margin-bottom: 10px;">
+          <button id="drawBtn" class="primary" style="min-width:160px; font-size:16px;">🎉 Draw</button>
+          <button id="drawAllBtn">Draw All</button>
+        </div>
+
+        <div class="columns">
+          <div>
+            <div class="muted" style="margin-bottom:6px;">Remaining (<span id="remainingCount">0</span>)</div>
+            <div class="card list" id="remainingList" style="padding:10px"></div>
+          </div>
+          <div>
+            <div class="muted" style="margin-bottom:6px;">Picked (<span id="pickedCount">0</span>)</div>
+            <div class="card list" id="pickedList" style="padding:10px"></div>
+          </div>
+        </div>
+
+        <div class="footer">
+          Pro tip: your list auto-saves in this browser. Use <em>Export</em> to back it up and re-import later.
+        </div>
+      </section>
+    </div>
+
+    <canvas class="confetti" id="confetti"></canvas>
+
+    <div class="footer">Built for GitHub Pages · MIT License</div>
+  </div>
+
+  <script>
+    // --- State ---
+    const LS_KEY = 'random-name-picker:v1';
+    let state = {
+      original: [],
+      remaining: [],
+      picked: [],
+      history: [] // stack of moves for undo
+    };
+
+    const els = {
+      namesInput: document.getElementById('namesInput'),
+      useInput: document.getElementById('useInput'),
+      loadedCount: document.getElementById('loadedCount'),
+
+      drawBtn: document.getElementById('drawBtn'),
+      drawAllBtn: document.getElementById('drawAllBtn'),
+      undoBtn: document.getElementById('undoBtn'),
+      winner: document.getElementById('winner'),
+      remainingList: document.getElementById('remainingList'),
+      pickedList: document.getElementById('pickedList'),
+      remainingCount: document.getElementById('remainingCount'),
+      pickedCount: document.getElementById('pickedCount'),
+
+      resetBtn: document.getElementById('resetBtn'),
+      addSample: document.getElementById('addSample'),
+      clearInput: document.getElementById('clearInput'),
+      saveBtn: document.getElementById('saveBtn'),
+      loadBtn: document.getElementById('loadBtn'),
+
+      exportBtn: document.getElementById('exportBtn'),
+      importBtn: document.getElementById('importBtn'),
+      importFile: document.getElementById('importFile'),
+
+      confetti: document.getElementById('confetti')
+    };
+
+    // --- Utils ---
+    const uniq = arr => Array.from(new Set(arr));
+    const cleanLines = (text) => uniq(text.split(/\r?\n/).map(s => s.trim()).filter(Boolean));
+    const save = () => localStorage.setItem(LS_KEY, JSON.stringify(state));
+    const load = () => {
+      try { const s = JSON.parse(localStorage.getItem(LS_KEY)); if (s && s.original) state = s; } catch(e) {}
+    }
+
+    function setFromList(list) {
+      state.original = [...list];
+      state.remaining = [...list];
+      state.picked = [];
+      state.history = [];
+      render();
+      save();
+    }
+
+    function drawOne() {
+      if (state.remaining.length === 0) return;
+      const idx = Math.floor(Math.random() * state.remaining.length);
+      const name = state.remaining.splice(idx, 1)[0];
+      state.picked.unshift(name);
+      state.history.push({ type: 'draw', name, idx });
+      render(name);
+      save();
+      blastConfetti();
+    }
+
+    function drawAllSequential() {
+      if (state.remaining.length === 0) return;
+      els.drawBtn.disabled = true; els.drawAllBtn.disabled = true;
+      const step = () => {
+        if (state.remaining.length === 0) { els.drawBtn.disabled = false; els.drawAllBtn.disabled = false; return; }
+        drawOne();
+        setTimeout(step, 400);
+      };
+      step();
+    }
+
+    function undo() {
+      const last = state.history.pop();
+      if (!last) return;
+      if (last.type === 'draw') {
+        // Put the name back in the original position if possible (end if out of range)
+        const { name, idx } = last;
+        const pIdx = state.picked.indexOf(name);
+        if (pIdx !== -1) state.picked.splice(pIdx, 1);
+        if (idx <= state.remaining.length) state.remaining.splice(idx, 0, name);
+        else state.remaining.push(name);
+      }
+      render();
+      save();
+    }
+
+    function resetAll() {
+      if (!state.original.length) return;
+      if (!confirm('Reset to the original loaded list?')) return;
+      setFromList(state.original);
+      els.winner.textContent = '—';
+    }
+
+    function render(highlightName) {
+      els.loadedCount.textContent = state.original.length;
+      els.remainingCount.textContent = state.remaining.length;
+      els.pickedCount.textContent = state.picked.length;
+
+      els.remainingList.innerHTML = '';
+      state.remaining.forEach((name, i) => {
+        const chip = document.createElement('span');
+        chip.className = 'chip';
+        chip.textContent = name;
+        const x = document.createElement('button');
+        x.className = 'x'; x.textContent = '×'; x.title = 'Remove name';
+        x.addEventListener('click', () => { removeName(name, 'remaining'); });
+        chip.appendChild(x);
+        els.remainingList.appendChild(chip);
+      });
+
+      els.pickedList.innerHTML = '';
+      state.picked.forEach((name) => {
+        const pill = document.createElement('span');
+        pill.className = 'pill'; pill.textContent = name;
+        els.pickedList.appendChild(pill);
+      });
+
+      if (highlightName) {
+        els.winner.textContent = highlightName;
+      }
+
+      els.drawBtn.disabled = state.remaining.length === 0;
+      els.drawAllBtn.disabled = state.remaining.length === 0;
+      els.undoBtn.disabled = state.history.length === 0;
+    }
+
+    function removeName(name, from) {
+      const arr = state[from];
+      const idx = arr.indexOf(name);
+      if (idx !== -1) {
+        arr.splice(idx, 1);
+        state.history.push({ type: 'remove', name, from, idx });
+        render(); save();
+      }
+    }
+
+    // --- Export / Import ---
+    function exportState() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'random-name-picker-state.json';
+      document.body.appendChild(a); a.click(); a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function importState(file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const obj = JSON.parse(reader.result);
+          if (obj && Array.isArray(obj.original) && Array.isArray(obj.remaining) && Array.isArray(obj.picked)) {
+            state = obj; render(); save();
+          } else {
+            alert('Invalid file format.');
+          }
+        } catch (e) { alert('Could not parse file.'); }
+      };
+      reader.readAsText(file);
+    }
+
+    // --- Confetti (tiny) ---
+    const ctx = els.confetti.getContext('2d');
+    let pieces = [];
+    function resizeConfetti(){ els.confetti.width = innerWidth; els.confetti.height = innerHeight; }
+    window.addEventListener('resize', resizeConfetti); resizeConfetti();
+    function blastConfetti() {
+      const count = 100;
+      for (let i = 0; i < count; i++) {
+        pieces.push({ x: innerWidth/2, y: innerHeight/3, vx: (Math.random()*4-2), vy: (Math.random()*-4-2), r: Math.random()*3+1, a: 1 });
+      }
+    }
+    function tick() {
+      ctx.clearRect(0,0,els.confetti.width, els.confetti.height);
+      pieces.forEach(p => {
+        p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.a -= 0.01;
+        ctx.globalAlpha = Math.max(p.a, 0);
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(p.x, p.y, p.r, p.r);
+      });
+      pieces = pieces.filter(p => p.a > 0);
+      requestAnimationFrame(tick);
+    }
+    tick();
+
+    // --- Events ---
+    els.useInput.addEventListener('click', () => {
+      const list = cleanLines(els.namesInput.value);
+      setFromList(list);
+      els.winner.textContent = '—';
+    });
+
+    els.drawBtn.addEventListener('click', drawOne);
+    els.drawAllBtn.addEventListener('click', drawAllSequential);
+    els.undoBtn.addEventListener('click', undo);
+
+    els.resetBtn.addEventListener('click', resetAll);
+
+    els.addSample.addEventListener('click', () => {
+      const sample = ['Alex Myhovych','Anastasia Tchrelashvili','Andres Valencia','Angelica Gobin','Anthony Kwan','Arin Cho','Aungmaw Lwin','Carlos Coreas','Carolina Pan','Cassie Wang','Chihyuan Lee','Daniel Sirota','Daniela Arias Rodriguez','Donna Twiggs','Elanna Ben Yosef','Eli Ben Yosef','Ellie Theodorakis','Eric Wang','Eva Sultana','Gab Gruenzweig','Gabriel Rosner','Gege Dai','Health Geller','Himansu Pal','Hongyan Liu','Irina Trusova','Isaac Bouskila','Isabella Arias','Ivan Lomakin','Izak (Yungi) Junger','Jack Chalouh','Jackelyn Guevara','Jagdish Gobin','Jamie Trinh','Jason Johnson','Jennifer Mercure','Jessica Diaz','Jian Mei Huang','Joan Scardigno','Joe Kim','Jonathan Manh','Julia Trusova','Kaia Nagao','Kaitlyn Leung','Kathleen Yan','Ketevan Arjevanidze','Khadezha Udin','Larissa Dobrohorska','Lauren Joseph','Le'];
+      els.namesInput.value = sample.join('\n');
+    });
+
+    els.clearInput.addEventListener('click', () => { els.namesInput.value = ''; els.namesInput.focus(); });
+
+    els.saveBtn.addEventListener('click', () => { save(); animateTemp('Saved!'); });
+    els.loadBtn.addEventListener('click', () => { load(); render(); animateTemp('Loaded!'); });
+
+    els.exportBtn.addEventListener('click', exportState);
+    els.importBtn.addEventListener('click', () => els.importFile.click());
+    els.importFile.addEventListener('change', (e) => { const f = e.target.files[0]; if (f) importState(f); e.target.value = ''; });
+
+    function animateTemp(msg) {
+      const b = document.createElement('div');
+      b.textContent = msg;
+      b.style.position = 'fixed'; b.style.bottom = '16px'; b.style.right = '16px';
+      b.style.padding = '10px 14px'; b.style.background = 'rgba(255,255,255,0.08)'; b.style.border = '1px solid rgba(255,255,255,0.18)'; b.style.borderRadius = '10px'; b.style.backdropFilter = 'blur(6px)';
+      document.body.appendChild(b);
+      setTimeout(() => { b.style.opacity = '0'; b.style.transition = 'opacity .6s'; }, 800);
+      setTimeout(() => b.remove(), 1500);
+    }
+
+    // --- Boot ---
+    load();
+    if (state.original.length) render();
+  </script>
+</body>
+</html>
