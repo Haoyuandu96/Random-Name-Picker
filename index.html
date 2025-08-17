@@ -1,53 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Random Name Picker</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Random Name Picker — Grouped</title>
   <style>
-    :root { --bg:#0f172a; --panel:#111827; --ink:#e5e7eb; --muted:#9ca3af; --accent:#22c55e; --accent-2:#3b82f6; --danger:#ef4444; --card:#1f2937; --chip:#0ea5e9; }
+    :root{--bg:#0f172a;--panel:#111827;--ink:#e5e7eb;--muted:#9ca3af;--accent:#22c55e;--accent-2:#3b82f6;--danger:#ef4444;--card:#1f2937;--chip:#0ea5e9}
     *{box-sizing:border-box} html,body{height:100%}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,'Helvetica Neue',Arial,'Noto Sans','Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol';
-      background: radial-gradient(1200px 600px at 80% -10%, rgba(59,130,246,0.2), transparent 60%),
-                  radial-gradient(1000px 500px at -10% 90%, rgba(34,197,94,0.16), transparent 60%),
-                  var(--bg); color:var(--ink)}
-    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,'Helvetica Neue',Arial,'Noto Sans';
+      background: radial-gradient(1200px 600px at 80% -10%, rgba(59,130,246,.2), transparent 60%),
+                  radial-gradient(1000px 500px at -10% 90%, rgba(34,197,94,.16), transparent 60%), var(--bg); color:var(--ink)}
+    .wrap{max-width:1150px;margin:0 auto;padding:24px}
     header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px}
     h1{font-size:clamp(24px,2.4vw,34px);margin:0;letter-spacing:.4px}
     .sub{color:var(--muted);font-size:14px}
-    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .grid{display:grid;grid-template-columns:320px 1fr;gap:16px}
     @media (max-width:900px){.grid{grid-template-columns:1fr}}
-    .card{background:rgba(17,24,39,.7);border:1px solid rgba(255,255,255,.06);box-shadow:0 10px 30px rgba(0,0,0,.35);border-radius:18px;padding:16px;backdrop-filter:blur(6px)}
-    textarea{width:100%;min-height:220px;background:var(--card);color:var(--ink);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:12px;resize:vertical;font-size:14px;line-height:1.4}
+    .card{background:rgba(17,24,39,.7);border:1px solid rgba(255,255,255,.06);box-shadow:0 10px 30px rgba(0,0,0,.35);border-radius:18px;padding:14px;backdrop-filter:blur(6px)}
+    textarea{width:100%;min-height:190px;background:var(--card);color:var(--ink);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:10px;resize:vertical;font-size:14px;line-height:1.4}
     .muted{color:var(--muted);font-size:13px}
     .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
     .row.space{justify-content:space-between}
-    button{appearance:none;border:1px solid transparent;border-radius:12px;padding:10px 14px;font-weight:600;cursor:pointer;transition:transform .04s,box-shadow .2s,opacity .2s,background .2s,border-color .2s;font-size:14px;
+    button{appearance:none;border:1px solid transparent;border-radius:12px;padding:9px 12px;font-weight:600;cursor:pointer;transition:transform .04s,box-shadow .2s,opacity .2s,background .2s,border-color .2s;font-size:14px;
       background:#0b1220;color:var(--ink);border-color:rgba(255,255,255,.08);box-shadow:0 2px 0 rgba(255,255,255,.05) inset,0 6px 14px rgba(0,0,0,.3)}
     button:hover{transform:translateY(-1px)} button:active{transform:translateY(0)}
-    button.primary{background:linear-gradient(180deg,#1a8a46,#0f6a35)} button.blue{background:linear-gradient(180deg,#3b82f6,#1d4ed8)}
-    button.warn{background:linear-gradient(180deg,#ef4444,#b91c1c)} button.ghost{background:transparent}
+    button.primary{background:linear-gradient(180deg,#1a8a46,#0f6a35)}
+    button.blue{background:linear-gradient(180deg,#3b82f6,#1d4ed8)}
+    button.warn{background:linear-gradient(180deg,#ef4444,#b91c1c)}
+    button.ghost{background:transparent}
     button:disabled{opacity:.55;cursor:not-allowed}
+    select, input[type=text]{background:var(--card);color:var(--ink);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:8px 10px}
     .columns{display:grid;grid-template-columns:1fr 1fr;gap:12px}
     @media (max-width:800px){.columns{grid-template-columns:1fr}}
-    .list{display:grid;gap:8px;max-height:350px;overflow:auto;padding-right:4px}
+    .list{display:grid;gap:8px;max-height:340px;overflow:auto;padding-right:4px}
     .chip{display:inline-flex;align-items:center;gap:8px;background:rgba(14,165,233,.12);border:1px solid rgba(14,165,233,.25);color:#e0f2fe;padding:8px 10px;border-radius:999px;font-size:13px}
     .chip .x{background:transparent;border:none;color:#e0f2fe;cursor:pointer;padding:0;margin-left:4px;font-weight:700}
-    .winner{font-size:clamp(22px,3vw,36px);text-align:center;background:linear-gradient(90deg,#93c5fd,#86efac);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800;letter-spacing:.4px;padding:10px 0;min-height:48px}
-    .confetti{position:fixed;inset:0;pointer-events:none}
     .pill{padding:6px 10px;border-radius:999px;border:1px dashed rgba(255,255,255,.15);font-size:12px;color:var(--muted);background:rgba(255,255,255,.02)}
-    .stat{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;color:#cbd5e1;font-size:12px}
-    .stat strong{color:#fff}
-    .footer{margin-top:12px;text-align:center;font-size:12px;color:var(--muted)}
-    a.link{color:#a5b4fc;text-decoration:none;border-bottom:1px dashed rgba(165,180,252,.5)}
+    .winner{font-size:clamp(22px,3vw,36px);text-align:center;background:linear-gradient(90deg,#93c5fd,#86efac);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:800;letter-spacing:.4px;padding:10px 0;min-height:48px}
+    .footer{margin-top:8px;text-align:center;font-size:12px;color:var(--muted)}
+    .group-list{display:grid;gap:6px;max-height:360px;overflow:auto}
+    .group-item{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:8px 10px;font-size:13px}
+    .badge{font-family:ui-monospace,Menlo,Consolas,monospace;color:#cbd5e1}
   </style>
 </head>
 <body>
   <div class="wrap">
     <header>
       <div>
-        <h1>🎲 Random Name Picker</h1>
-        <div class="sub">Paste names (one per line). Each draw removes the name from the list.</div>
+        <h1>🎲 Random Name Picker — Grouped</h1>
+        <div class="sub">Select a group to draw from, or draw one from each group.</div>
       </div>
       <div class="row">
         <button id="saveBtn" class="blue">💾 Save</button>
@@ -57,53 +58,51 @@
     </header>
 
     <div class="grid">
+      <!-- Left: Groups & Input -->
       <section class="card">
-        <div class="row space">
-          <div>
-            <strong>Names Input</strong>
-            <div class="muted">One per line. Duplicates ignored.</div>
-          </div>
+        <strong>Groups</strong>
+        <div class="group-list" id="groupList"></div>
+        <hr style="border-color:rgba(255,255,255,.08);margin:12px 0">
+        <div class="row space" style="margin-bottom:6px">
+          <div><strong>Add/Replace Names in Selected Group</strong><div class="muted">One per line. Click “Use for Group”.</div></div>
           <div class="row">
-            <button id="addSample" class="ghost">➕ Sample</button>
             <button id="clearInput" class="ghost">🧹 Clear</button>
           </div>
         </div>
-        <textarea id="namesInput" placeholder="Alice
-Bob
-Charlie
-…"></textarea>
-        <div class="row" style="margin-top:10px">
-          <button id="useInput" class="primary">Use This List</button>
-          <span class="stat">Loaded: <strong id="loadedCount">0</strong></span>
+        <textarea id="namesInput" placeholder="Alice&#10;Bob&#10;Charlie"></textarea>
+        <div class="row" style="margin-top:8px">
+          <button id="useForGroupBtn" class="primary">Use for Group</button>
+          <span class="badge">Selected: <strong id="selectedGroupLabel">—</strong></span>
         </div>
       </section>
 
+      <!-- Right: Draw & Lists -->
       <section class="card">
         <div class="row space">
           <div>
             <strong>Draw</strong>
-            <div class="muted">Randomly selects one remaining name and removes it.</div>
+            <div class="muted">Pick randomly from the selected group.</div>
           </div>
           <div class="row">
-            <button id="undoBtn" title="Undo last draw">↩️ Undo</button>
-            <button id="exportBtn" title="Export current state">⬇️ Export</button>
+            <button id="undoBtn">↩️ Undo</button>
+            <button id="exportBtn">⬇️ Export</button>
             <input type="file" id="importFile" accept="application/json" style="display:none">
-            <button id="importBtn" title="Import a saved state">⬆️ Import</button>
+            <button id="importBtn">⬆️ Import</button>
           </div>
+        </div>
+
+        <div class="row" style="gap:10px;margin:8px 0">
+          <select id="groupSelect"></select>
+          <button id="drawBtn" class="primary">🎉 Draw (Selected)</button>
+          <button id="drawRoundBtn">Draw 1 From Each Group</button>
+          <button id="clearRemainingBtn" class="warn">🗑️ Clear Remaining (Selected)</button>
         </div>
 
         <div class="winner" id="winner">—</div>
-        <div class="row" style="justify-content:center;gap:12px;margin-bottom:10px">
-          <button id="drawBtn" class="primary" style="min-width:160px;font-size:16px">🎉 Draw</button>
-          <button id="drawAllBtn">Draw All</button>
-          <button id="clearRemainingBtn" class="warn" title="Remove everyone currently in Remaining">🗑️ Clear Remaining</button>
-        </div>
 
         <div class="columns">
           <div>
-            <div class="row space" style="margin-bottom:6px">
-              <div class="muted">Remaining (<span id="remainingCount">0</span>)</div>
-            </div>
+            <div class="muted" style="margin-bottom:6px">Remaining (<span id="remainingCount">0</span>)</div>
             <div class="card list" id="remainingList" style="padding:10px"></div>
           </div>
           <div>
@@ -112,28 +111,23 @@ Charlie
           </div>
         </div>
 
-        <div class="footer">
-          Pro tip: your list auto-saves in this browser. Use <em>Export</em> to back it up and re-import later.
-        </div>
+        <div class="footer">Tip: Export to save your grouped progress and re-import later.</div>
       </section>
     </div>
-
-    <canvas class="confetti" id="confetti"></canvas>
-
-    <div class="footer">Built for GitHub Pages · MIT License</div>
   </div>
 
   <script>
-    // --- State ---
-    const LS_KEY = 'random-name-picker:v1';
-    let state = { original: [], remaining: [], picked: [], history: [] };
+    const LS_KEY = 'grouped-name-picker:v1';
+    let state = { mode:'grouped', groups:{}, history:[] };
 
     const els = {
       namesInput: document.getElementById('namesInput'),
-      useInput: document.getElementById('useInput'),
-      loadedCount: document.getElementById('loadedCount'),
+      useForGroupBtn: document.getElementById('useForGroupBtn'),
+      selectedGroupLabel: document.getElementById('selectedGroupLabel'),
+      groupSelect: document.getElementById('groupSelect'),
+      groupList: document.getElementById('groupList'),
       drawBtn: document.getElementById('drawBtn'),
-      drawAllBtn: document.getElementById('drawAllBtn'),
+      drawRoundBtn: document.getElementById('drawRoundBtn'),
       clearRemainingBtn: document.getElementById('clearRemainingBtn'),
       undoBtn: document.getElementById('undoBtn'),
       winner: document.getElementById('winner'),
@@ -142,164 +136,178 @@ Charlie
       remainingCount: document.getElementById('remainingCount'),
       pickedCount: document.getElementById('pickedCount'),
       resetBtn: document.getElementById('resetBtn'),
-      addSample: document.getElementById('addSample'),
       clearInput: document.getElementById('clearInput'),
       saveBtn: document.getElementById('saveBtn'),
       loadBtn: document.getElementById('loadBtn'),
       exportBtn: document.getElementById('exportBtn'),
       importBtn: document.getElementById('importBtn'),
-      importFile: document.getElementById('importFile'),
-      confetti: document.getElementById('confetti')
+      importFile: document.getElementById('importFile')
     };
 
-    // --- Utils ---
-    const uniq = arr => Array.from(new Set(arr));
-    const cleanLines = (text) => uniq(text.split(/\r?\n/).map(s => s.trim()).filter(Boolean));
-    const save = () => localStorage.setItem(LS_KEY, JSON.stringify(state));
-    const load = () => { try { const s = JSON.parse(localStorage.getItem(LS_KEY)); if (s && s.original) state = s; } catch(e){} };
+    function save(){ localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+    function load(){ try{ const s = JSON.parse(localStorage.getItem(LS_KEY)); if(s && s.mode) state = s; }catch(e){} }
 
-    function setFromList(list){
-      state.original = [...list];
-      state.remaining = [...list];
-      state.picked = [];
-      state.history = [];
+    function ensureGroup(name){
+      if(!state.groups[name]){
+        state.groups[name] = { original:[], remaining:[], picked:[] };
+      }
+    }
+
+    function setGroupFromList(gname, list){
+      ensureGroup(gname);
+      state.groups[gname].original = [...list];
+      state.groups[gname].remaining = [...list];
+      state.groups[gname].picked = [];
+      state.history.push({type:'setGroup', group:gname, count:list.length});
       render(); save();
     }
 
-    function drawOne(){
-      if (!state.remaining.length) return;
-      const idx = Math.floor(Math.random()*state.remaining.length);
-      const name = state.remaining.splice(idx,1)[0];
-      state.picked.unshift(name);
-      state.history.push({type:'draw', name, idx});
-      render(name); save(); blastConfetti();
+    function currentGroup(){ return els.groupSelect.value; }
+
+    function drawOneFromGroup(g){
+      const grp = state.groups[g]; if(!grp || grp.remaining.length===0) return;
+      const idx = Math.floor(Math.random()*grp.remaining.length);
+      const name = grp.remaining.splice(idx,1)[0];
+      grp.picked.unshift(name);
+      state.history.push({type:'draw', group:g, name, idx});
+      render(g, name); save();
     }
 
-    function drawAllSequential(){
-      if (!state.remaining.length) return;
-      els.drawBtn.disabled = true; els.drawAllBtn.disabled = true; els.clearRemainingBtn.disabled = true;
-      const step = ()=>{
-        if (!state.remaining.length){ els.drawBtn.disabled=false; els.drawAllBtn.disabled=false; els.clearRemainingBtn.disabled=false; return; }
-        drawOne(); setTimeout(step, 400);
-      }; step();
+    function drawRound(){
+      Object.keys(state.groups).forEach(g=>{
+        if(state.groups[g].remaining.length>0){
+          drawOneFromGroup(g);
+        }
+      });
+    }
+
+    function clearRemaining(g){
+      const grp = state.groups[g]; if(!grp || grp.remaining.length===0) return;
+      if(!confirm('Clear ALL remaining in '+g+'?')) return;
+      grp.remaining = [];
+      state.history.push({type:'clearRemaining', group:g});
+      render(); save();
     }
 
     function undo(){
-      const last = state.history.pop(); if (!last) return;
-      if (last.type === 'draw'){
-        const {name, idx} = last;
-        const pIdx = state.picked.indexOf(name);
-        if (pIdx !== -1) state.picked.splice(pIdx,1);
-        if (idx <= state.remaining.length) state.remaining.splice(idx,0,name); else state.remaining.push(name);
+      const last = state.history.pop(); if(!last) return;
+      if(last.type==='draw'){
+        const grp = state.groups[last.group];
+        const pIdx = grp.picked.indexOf(last.name);
+        if(pIdx!==-1) grp.picked.splice(pIdx,1);
+        if(last.idx <= grp.remaining.length) grp.remaining.splice(last.idx,0,last.name);
+        else grp.remaining.push(last.name);
+      } else if(last.type==='setGroup'){
+        // no-op undo for now
+      } else if(last.type==='clearRemaining'){
+        // cannot restore without snapshot; keeping it simple
       }
       render(); save();
     }
 
-    function resetAll(){
-      if (!state.original.length) return;
-      if (!confirm('Reset to the original loaded list?')) return;
-      setFromList(state.original); els.winner.textContent = '—';
-    }
+    function render(selected, highlightName){
+      // Build group dropdown + sidebar
+      const names = Object.keys(state.groups);
+      els.groupSelect.innerHTML = names.map(n=>`<option value="${n}">${n}</option>`).join('');
+      if(!selected){ selected = els.groupSelect.value || names[0] || ''; }
+      if(selected && !state.groups[selected]) ensureGroup(selected);
+      els.groupSelect.value = selected || '';
 
-    // NEW: Clear Remaining feature
-    function clearRemaining(){
-      if (!state.remaining.length) return;
-      const ok = confirm('Remove ALL participants currently in Remaining? This will not change the original input, but Remaining will become empty.');
-      if (!ok) return;
-      state.remaining = [];
-      state.history.push({type:'clearRemaining'});
-      render(); save();
-    }
+      els.groupList.innerHTML = names.map(n=>{
+        const g = state.groups[n];
+        return `<div class="group-item">
+                  <span>${n}</span>
+                  <span class="badge">R:${g.remaining.length} · P:${g.picked.length}</span>
+                </div>`;
+      }).join('');
 
-    function render(highlightName){
-      els.loadedCount.textContent = state.original.length;
-      els.remainingCount.textContent = state.remaining.length;
-      els.pickedCount.textContent = state.picked.length;
+      els.selectedGroupLabel.textContent = selected || '—';
+
+      // Populate remaining/picked for selected
+      const grp = state.groups[selected] || {remaining:[], picked:[]};
+      els.remainingCount.textContent = grp.remaining.length;
+      els.pickedCount.textContent = grp.picked.length;
 
       els.remainingList.innerHTML = '';
-      state.remaining.forEach(name => {
-        const chip = document.createElement('span');
-        chip.className = 'chip'; chip.textContent = name;
-        const x = document.createElement('button'); x.className = 'x'; x.textContent='×'; x.title='Remove name';
-        x.addEventListener('click', ()=>{ removeName(name, 'remaining'); });
-        chip.appendChild(x); els.remainingList.appendChild(chip);
+      grp.remaining.forEach(name=>{
+        const span = document.createElement('span'); span.className='chip'; span.textContent=name;
+        const x = document.createElement('button'); x.className='x'; x.textContent='×'; x.title='Remove';
+        x.addEventListener('click', ()=>{
+          const i = grp.remaining.indexOf(name);
+          if(i!==-1){ grp.remaining.splice(i,1); state.history.push({type:'remove', group:selected, name, idx:i}); render(selected); save(); }
+        });
+        span.appendChild(x); els.remainingList.appendChild(span);
       });
 
       els.pickedList.innerHTML = '';
-      state.picked.forEach(name => {
-        const pill = document.createElement('span'); pill.className='pill'; pill.textContent=name; els.pickedList.appendChild(pill);
+      grp.picked.forEach(name=>{
+        const pill = document.createElement('span'); pill.className='pill'; pill.textContent=name;
+        els.pickedList.appendChild(pill);
       });
 
-      if (highlightName) els.winner.textContent = highlightName;
-      els.drawBtn.disabled = state.remaining.length === 0;
-      els.drawAllBtn.disabled = state.remaining.length === 0;
-      els.clearRemainingBtn.disabled = state.remaining.length === 0;
-      els.undoBtn.disabled = state.history.length === 0;
+      if(highlightName){ els.winner.textContent = highlightName; }
+      els.drawBtn.disabled = grp.remaining.length===0;
+      els.clearRemainingBtn.disabled = grp.remaining.length===0;
+      els.undoBtn.disabled = state.history.length===0;
+      els.drawRoundBtn.disabled = names.every(n => state.groups[n].remaining.length===0);
     }
 
-    function removeName(name, from){
-      const arr = state[from]; const idx = arr.indexOf(name);
-      if (idx !== -1){ arr.splice(idx,1); state.history.push({type:'remove', name, from, idx}); render(); save(); }
-    }
-
-    // Export / Import
+    // Import/Export (supports grouped or legacy flat state)
     function exportState(){
       const blob = new Blob([JSON.stringify(state,null,2)], {type:'application/json'});
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = 'random-name-picker-state.json';
+      const a = document.createElement('a'); a.href=url; a.download='grouped-randomizer-state.json';
       document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
     }
     function importState(file){
       const reader = new FileReader();
-      reader.onload = () => {
-        try {
+      reader.onload = ()=>{
+        try{
           const obj = JSON.parse(reader.result);
-          if (obj && Array.isArray(obj.original) && Array.isArray(obj.remaining) && Array.isArray(obj.picked)){
-            state = obj; render(); save();
-          } else { alert('Invalid file format.'); }
-        } catch(e){ alert('Could not parse file.'); }
+          if(obj.groups){ state = obj; }
+          else if(Array.isArray(obj.remaining)){ // legacy flat
+            state = { mode:'grouped', groups:{ 'Ungrouped': { original:[...obj.original||obj.remaining], remaining:[...obj.remaining], picked:[...(obj.picked||[])] } }, history:[] };
+          } else {
+            alert('Unsupported file format'); return;
+          }
+          render(); save();
+        }catch(e){ alert('Could not parse file.'); }
       };
       reader.readAsText(file);
     }
 
-    // Confetti (tiny)
-    const ctx = document.getElementById('confetti').getContext('2d');
-    let pieces = [];
-    function resizeConfetti(){ const c=document.getElementById('confetti'); c.width=innerWidth; c.height=innerHeight; }
-    window.addEventListener('resize', resizeConfetti); resizeConfetti();
-    function blastConfetti(){ for (let i=0;i<100;i++){ pieces.push({x:innerWidth/2,y:innerHeight/3,vx:(Math.random()*4-2),vy:(Math.random()*-4-2),r:Math.random()*3+1,a:1}); } }
-    function tick(){ const c=document.getElementById('confetti'); ctx.clearRect(0,0,c.width,c.height);
-      pieces.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; p.vy+=0.05; p.a-=0.01; ctx.globalAlpha=Math.max(p.a,0); ctx.fillStyle='#fff'; ctx.fillRect(p.x,p.y,p.r,p.r); });
-      pieces = pieces.filter(p=>p.a>0); requestAnimationFrame(tick);
-    } tick();
-
     // Events
-    els.useInput.addEventListener('click', ()=>{ const list = cleanLines(els.namesInput.value); setFromList(list); els.winner.textContent='—'; });
-    els.drawBtn.addEventListener('click', drawOne);
-    els.drawAllBtn.addEventListener('click', drawAllSequential);
-    els.clearRemainingBtn.addEventListener('click', clearRemaining);
-    els.undoBtn.addEventListener('click', undo);
-    els.resetBtn.addEventListener('click', resetAll);
-    els.addSample.addEventListener('click', ()=>{
-      const sample = ['Alice','Bob','Charlie','Dora','Eli','Faye','Gus','Hana','Ivan','Jae'];
-      els.namesInput.value = sample.join('\n');
+    els.groupSelect.addEventListener('change', ()=> render(els.groupSelect.value));
+    els.useForGroupBtn.addEventListener('click', ()=>{
+      const g = currentGroup() || 'Group 1';
+      const list = Array.from(new Set(els.namesInput.value.split(/\\r?\\n/).map(s=>s.trim()).filter(Boolean)));
+      setGroupFromList(g, list);
     });
+    els.drawBtn.addEventListener('click', ()=> drawOneFromGroup(currentGroup()));
+    els.drawRoundBtn.addEventListener('click', drawRound);
+    els.clearRemainingBtn.addEventListener('click', ()=> clearRemaining(currentGroup()));
+    els.undoBtn.addEventListener('click', undo);
     els.clearInput.addEventListener('click', ()=>{ els.namesInput.value=''; els.namesInput.focus(); });
-    els.saveBtn.addEventListener('click', ()=>{ save(); toast('Saved!'); });
-    els.loadBtn.addEventListener('click', ()=>{ load(); render(); toast('Loaded!'); });
+    els.saveBtn.addEventListener('click', ()=>{ save(); temp('Saved!'); });
+    els.loadBtn.addEventListener('click', ()=>{ load(); render(); temp('Loaded!'); });
     els.exportBtn.addEventListener('click', exportState);
     els.importBtn.addEventListener('click', ()=> els.importFile.click());
-    els.importFile.addEventListener('change', (e)=>{ const f=e.target.files[0]; if (f) importState(f); e.target.value=''; });
+    els.importFile.addEventListener('change', (e)=>{ const f=e.target.files[0]; if(f) importState(f); e.target.value=''; });
 
-    function toast(msg){
+    function temp(msg){
       const b=document.createElement('div'); b.textContent=msg;
-      b.style.position='fixed'; b.style.bottom='16px'; b.style.right='16px'; b.style.padding='10px 14px';
-      b.style.background='rgba(255,255,255,.08)'; b.style.border='1px solid rgba(255,255,255,.18)'; b.style.borderRadius='10px'; b.style.backdropFilter='blur(6px)';
+      b.style.position='fixed'; b.style.bottom='16px'; b.style.right='16px';
+      b.style.padding='10px 14px'; b.style.background='rgba(255,255,255,.08)'; b.style.border='1px solid rgba(255,255,255,.18)'; b.style.borderRadius='10px'; b.style.backdropFilter='blur(6px)';
       document.body.appendChild(b); setTimeout(()=>{ b.style.opacity='0'; b.style.transition='opacity .6s'; },800); setTimeout(()=>b.remove(),1500);
     }
 
-    // Boot
-    load(); if (state.original.length) render();
+    // Boot: start with empty groups, but if local storage has data, use that
+    load();
+    if(!state.groups || Object.keys(state.groups).length===0){
+      // Initialize with 10 empty groups
+      for(let i=1;i<=10;i++){ state.groups['Group '+i] = { original:[], remaining:[], picked:[] }; }
+    }
+    render(Object.keys(state.groups)[0] || 'Group 1');
   </script>
 </body>
 </html>
