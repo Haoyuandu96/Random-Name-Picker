@@ -2,20 +2,6 @@
   "mode": "grouped",
   "groups": {
     "Group 1": {
-      "original": [
-        "CARLOS COREAS",
-        "HEALTH GELLER",
-        "OXANA GOLOVA",
-        "NADEZHDA KOVTUN",
-        "VLADISLAV POLIAKOV",
-        "MARINA POLIAKOVA",
-        "GABRIEL ROSNER",
-        "ZALMAN SIROTA",
-        "NEKHA SIROTA",
-        "SHARON SIROTA",
-        "DANIEL SIROTA",
-        "SAPIR SIROTA"
-      ],
       "remaining": [
         "CARLOS COREAS",
         "HEALTH GELLER",
@@ -33,17 +19,6 @@
       "picked": []
     },
     "Group 2": {
-      "original": [
-        "KETEVAN ARJEVANIDZE",
-        "NATALIA MERMELSHTEYN",
-        "PETR MERMELSHTEYN",
-        "ALEX MYHOVYCH",
-        "SVITLANA NAGAO",
-        "KAIA NAGAO",
-        "VERA SHPYLOVA",
-        "TEKLA TCHRELASHVILI",
-        "ANASTASIA TCHRELASHVILI"
-      ],
       "remaining": [
         "KETEVAN ARJEVANIDZE",
         "NATALIA MERMELSHTEYN",
@@ -58,18 +33,6 @@
       "picked": []
     },
     "Group 3": {
-      "original": [
-        "LARISSA DOBROHORSKA",
-        "TYLER FOLEY",
-        "IVAN LOMAKIN",
-        "OLGA NECHIPURENKO",
-        "VERONICA SOZIO",
-        "STEPHEN SOZIO",
-        "VALERIY TRUSOV",
-        "YELENA TRUSOVA",
-        "IRINA TRUSOVA",
-        "JULIA TRUSOVA"
-      ],
       "remaining": [
         "LARISSA DOBROHORSKA",
         "TYLER FOLEY",
@@ -85,19 +48,6 @@
       "picked": []
     },
     "Group 4": {
-      "original": [
-        "YULI CHEN",
-        "CHIHYUAN LEE",
-        "GEGE DAI",
-        "KAITLYN LEUNG",
-        "TIFFANY LIANG",
-        "SAKIB LOBO-RAFSAN",
-        "SOPHIA LOBO-RAFSAN",
-        "JONATHAN MANH",
-        "ZIFENG TANG",
-        "ELLIE THEODORAKIS",
-        "JAMIE TRINH"
-      ],
       "remaining": [
         "YULI CHEN",
         "CHIHYUAN LEE",
@@ -114,17 +64,6 @@
       "picked": []
     },
     "Group 5": {
-      "original": [
-        "JACK CHALOUH",
-        "NURIT GRUENZWEIG",
-        "IZAK (YUNGI) JUNGER",
-        "OLGA NISANOV",
-        "ELANNA BEN YOSEF",
-        "NATALIE BEN YOSEF",
-        "ELI BEN YOSEF",
-        "GAB GRUENZWEIG",
-        "JOSH (SHIYA) GRUENZWEIG"
-      ],
       "remaining": [
         "JACK CHALOUH",
         "NURIT GRUENZWEIG",
@@ -139,18 +78,6 @@
       "picked": []
     },
     "Group 6": {
-      "original": [
-        "XIAOMENG DU",
-        "JASON JOHNSON",
-        "AUNGMAW LWIN",
-        "MAXIMUS LWIN",
-        "REILLY REBHAHN",
-        "LORENZO SCARDIGNO",
-        "JOAN SCARDIGNO",
-        "PERRY SCARDIGNO",
-        "YANHUA SHEN",
-        "PING YUE"
-      ],
       "remaining": [
         "XIAOMENG DU",
         "JASON JOHNSON",
@@ -166,20 +93,6 @@
       "picked": []
     },
     "Group 7": {
-      "original": [
-        "ISAAC BOUSKILA",
-        "WING SZE CHOI",
-        "JAGDISH GOBIN",
-        "ANGELICA GOBIN",
-        "JACKELYN GUEVARA",
-        "DR ANTHONY KWAN",
-        "JENNIFER MERCURE",
-        "NAKUL RAO",
-        "REJVI SHAJU",
-        "EVA SULTANA",
-        "SARA VERMA",
-        "SANDY WU"
-      ],
       "remaining": [
         "ISAAC BOUSKILA",
         "WING SZE CHOI",
@@ -197,19 +110,6 @@
       "picked": []
     },
     "Group 8": {
-      "original": [
-        "MIKE CHEN",
-        "VALENTINA FORY",
-        "JOE KIM",
-        "LINDA LIN",
-        "ORGO MORKA",
-        "STEVEN PAN",
-        "CAROLINA PAN",
-        "LILLIANA PAN",
-        "CASSIE WANG",
-        "HONGYAN LIU",
-        "XIULING ZHAO"
-      ],
       "remaining": [
         "MIKE CHEN",
         "VALENTINA FORY",
@@ -226,20 +126,6 @@
       "picked": []
     },
     "Group 9": {
-      "original": [
-        "YASIR AHMED",
-        "MOSAMMAT ALAM",
-        "SYDNEY ANTONAWICH",
-        "ARIN CHO",
-        "JIAN MEI HUANG",
-        "LAUREN JOSEPH",
-        "STEPHEN MILANI",
-        "HIMANSU PAL",
-        "LEAH RADER",
-        "NISSY THOMAS",
-        "DONNA TWIGGS",
-        "KHADEZHA UDIN"
-      ],
       "remaining": [
         "YASIR AHMED",
         "MOSAMMAT ALAM",
@@ -257,18 +143,6 @@
       "picked": []
     },
     "Group 10": {
-      "original": [
-        "DANIELA ARIAS RODRIGUEZ",
-        "YORKIE ARIAS",
-        "ISABELLA ARIAS",
-        "MELINDA CHIU",
-        "JESSICA DIAZ",
-        "SHERRYANN DRAKES",
-        "PHILIP KWOK",
-        "ANDRES VALENCIA",
-        "ERIC WANG",
-        "KATHLEEN YAN"
-      ],
       "remaining": [
         "DANIELA ARIAS RODRIGUEZ",
         "YORKIE ARIAS",
@@ -283,6 +157,5 @@
       ],
       "picked": []
     }
-  },
-  "history": []
+  }
 }
